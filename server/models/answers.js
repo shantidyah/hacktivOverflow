@@ -11,6 +11,10 @@ const schemaAnswer = new Schema ({
         type: Schema.Types.ObjectId, 
         ref: 'User'
     },
+    question: {
+        type: Schema.Types.ObjectId, 
+        ref: 'Question'
+    },
     upvote: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -26,3 +30,7 @@ const schemaAnswer = new Schema ({
 },{
     timestamps: true
 })
+
+const Answer = mongoose.model('Answer', schemaAnswer)
+
+module.exports = Answer

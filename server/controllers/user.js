@@ -34,6 +34,7 @@ class User {
         })
     }
     static Login( req, res ){
+        console.log(req.body.email)
         Users.findOne({
             email: req.body.email
         })
@@ -54,6 +55,19 @@ class User {
         })
         .catch( err =>{
             res.status(401).json({msg:err})
+        })
+    }
+    static Verify( req, res ){
+        console.log("masuk sini");
+        
+        var decoded = jwt.verify( req.headers.token, process.env.secretKey )
+   
+        Users.findOne({email: decoded.email})
+        .then( user =>{
+            res.status(200).json(user)
+        })
+        .catch( err =>{
+            res.status(400).json({ msg: err.message })
         })
     }
 }

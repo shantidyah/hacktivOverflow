@@ -81,13 +81,9 @@ class User {
           data:{}
         })
         .then(response => {
-            console.log(response.data);
-            
-            // var salt = bcrypt.genSaltSync(5)
-            // var hash = bcrypt.hashSync(response.data.id, salt)
+            // console.log(response.data);
           Users.findOne({email: response.data.email})
           .then(user => {
-            //   console.log(user);
               
             if(!user){
             console.log("new user");
@@ -101,6 +97,8 @@ class User {
                 Users.findOne({email: response.data.email})
                 .then(user => {
                   if(user){
+                      console.log(user);
+                      
                     jwt.sign({id: user._id, name: user.name, email: user.email}, process.env.secretKey, function(err, token) {
                       res.status(201).json({token: token})
                     })
@@ -127,7 +125,7 @@ class User {
               console.log("hasil compare", compare);
               
               if(compare){
-                jwt.sign({id: user._id, name: user.name}, process.env.secretKey, (err, token) => {
+                jwt.sign({id: user._id, name: user.name, email: user.email}, process.env.secretKey, (err, token) => {
                   if(err) res.status(401).json('Failed to sign token')
                   res.status(201).json({token: token})
                 })

@@ -9,6 +9,10 @@ var usersRouter = require('./routes/users');
 var answerRouter = require('./routes/answers')
 var questRouter = require('./routes/questions')
 
+var Cron = require('./background-job/cronJob')
+Cron()
+
+
 var app = express();
 require('dotenv').config()
 app.use(require('cors')())

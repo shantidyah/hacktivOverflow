@@ -46,6 +46,7 @@ class Answer{
             }
             else{
                 Answers.findOne({
+                    _id: req.params.id,
                     downvote: { $in: req.user.id }
                 })
                 .then( downvote =>{
@@ -95,6 +96,7 @@ class Answer{
             }
             else{
                 Answers.findOne({ // buat ngecek udh pernah upvote atau belom
+                    _id: req.params.id,
                     upvote: { $in: req.user.id }
                 })
                 .then( upvote =>{
@@ -132,6 +134,25 @@ class Answer{
         })
         .catch( err =>{
             res.status(400).json({msg: err.message})
+        })
+    }
+    static Update( req, res ){
+        Answers.findOneAndUpdate({
+            _id: req.params.id,
+            user: req.user.id
+        },{
+            answer: req.body.answer
+        })
+        .then( ans =>{
+            if( ans ){
+                res.status(200).json("berhasil update")
+            }
+            else{
+                res.status(400).json({msg:"you dont have an access to update this answer"})
+            }
+        })
+        .catch(err=>{
+            res.status(400).json({msg:err.message})
         })
     }
 }

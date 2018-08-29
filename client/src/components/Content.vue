@@ -13,8 +13,6 @@
 				</div>
 				<div class="col-md-10 col-sm-10">
 					  <router-link :to="{name: 'detail', params: {id: question._id}}" class="mt-0 mb-1" style="color:black; text-decoration: none" @click.native="Detail(question._id)">{{question.title}}</router-link>
-
-						<!-- <div style="cursor:pointer">{{question.title}}</div> -->
 						<div><p align="right" style="font-size:80%">asked {{question.createdAt | changeDate}} by {{question.user.name}}</p></div>
 				</div>
 			</div>
@@ -31,6 +29,12 @@ export default {
 		...mapState([
 			'allQuestion'
 		])
+	},
+	mounted(){
+		if(this.$route.params.id !== undefined){
+			this.Detail(this.$route.params.id)
+			this.$store.commit('idQuest',this.$route.params.id)
+		}
 	},
 	filters:{
 		changeDate:function(val){

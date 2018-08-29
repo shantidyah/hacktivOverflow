@@ -15,6 +15,8 @@
                     <input type="password" class="form-control" name="password" v-model="password">
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" @click="LoginFb">Facebook Login</button>
+
                     <button type="button" class="btn btn-primary" data-dismiss="modal" @click="Login">Login</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">Close</button>
                 </div>
@@ -53,7 +55,8 @@ export default {
     },
     methods:{
         ...mapActions([
-            'Login'
+            'Login',
+            'LoginFb'
         ]),
         close(){
             this.$store.commit('email','')

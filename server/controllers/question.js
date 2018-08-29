@@ -67,6 +67,7 @@ class Question {
             }
             else{
                 Questions.findOne({ // buat ngecek udh pernah upvote atau belom
+                    _id: req.params.id,
                     upvote: { $in: req.user.id }
                 })
                 .then( upvote =>{
@@ -120,6 +121,7 @@ class Question {
             }
             else{
                 Questions.findOne({
+                    _id: req.params.id,
                     downvote: { $in: req.user.id }
                 })
                 .then( downvote =>{
@@ -164,20 +166,45 @@ class Question {
         })
         .then( quest =>{
             if(quest){
-                Answers.remove({ question: req.params.id})
-                .then( ans =>{
-                    res.status(200).json("success delete a question")
-                })
-                .catch( err =>{
-                    res.status(400).json({msg: err.message})
-                })
+                if(quest.answers.length>0){
+                    Answers.remove({ question: req.params.id})
+                    .then( ans =>{
+                        res.status(200).json("success delete a question")
+                    })
+                    .catch( err =>{
+                        res.status(400).json({msg: err.message})
+                    })
+                }
+                else if(quest.answers.length<=0){
+                    res.status(200).json("success delete a question")                
+                }
             }
             else{
-                res.status(400).json({msg: "you dont have access to delete this question"})
+                res.status(400).json({msg: "you dont have an access to delete this question"})
             }
         })
         .catch( err =>{
             res.status(400).json({msg: err.message})
+        })
+    }
+    static Update( req, res ){
+        Questions.findOneAndUpdate({
+            _id: req.params.id,
+            user: req.user.id
+        },{
+            title: req.body.title,
+            question: req.body.question
+        })
+        .then(quest=>{
+            if(quest){
+                res.status(200).json("berhasil update")
+            }
+            else{
+                res.status(400).json({msg:"you dont have an access to update this question"})
+            }
+        })
+        .catch(err=>{
+            res.status(400).json({msg:err.message})
         })
     }
 }

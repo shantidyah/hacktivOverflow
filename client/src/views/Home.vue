@@ -11,6 +11,9 @@
     <Login></Login>
     <Register></Register>
     <create-q></create-q>
+    <EditQ></EditQ>
+    <EditA></EditA>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -24,6 +27,10 @@ import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import CreateQ from '@/components/CreateQ.vue'
 import Detail from '@/components/Detail.vue'
+import Footer from '@/components/Footer.vue'
+import EditQ from '@/components/EditQ.vue'
+import EditA from '@/components/EditA.vue'
+
 
 import {mapState, mapActions} from 'vuex'
 
@@ -37,12 +44,21 @@ export default {
     Login,
     Register,
     CreateQ,
-    Detail
+    Detail,
+    Footer,
+    EditQ,
+    EditA
   },
   computed:{
     ...mapState([
-      'statusDetail'
+      'statusDetail',
+      'statusLogin'
     ])
+  },
+  watch:{
+    statusLogin(val){
+      this.statusLogin = val
+    }
   },
   created(){
     this.LocalStorage()
@@ -51,7 +67,7 @@ export default {
   methods:{
     ...mapActions([
       'LocalStorage',
-      'GetAll'
+      'GetAll',
     ])
   }
 }

@@ -7,7 +7,7 @@
             </div>
         </div>
             <div class="col align-self-center" style="font-size:200%">Top Question</div>
-            <div><a href='#'>Create Question</a></div>
+            <div><a href='#' data-toggle="modal" data-target="#modal-createqu">Create Question</a></div>
     </div>
 </template>
 

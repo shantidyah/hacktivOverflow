@@ -8,7 +8,12 @@ export default new Vuex.Store({
     email:'',
     password:'',
     statusLogin:false,
-    name:''
+    name:'',
+    title: '',
+    question: '',
+    allQuestion: '',
+    detailQuestion: '',
+    statusDetail: false
   },
   mutations: {
     statusLogin(state,payload){
@@ -22,6 +27,18 @@ export default new Vuex.Store({
     },
     name(state,payload){
       state.name = payload
+    },
+    title(state,payload){
+      state.title = payload
+    },
+    question(state,payload){
+      state.question = payload
+    },
+    allQuestion(state,payload){
+      state.allQuestion = payload
+    },
+    detailQuestion(state,payload){
+      state.detailQuestion = payload
     }
   },
   actions: { // http://localhost:3000/
@@ -66,7 +83,7 @@ export default new Vuex.Store({
       swal('','success login!','success')
       this.state.statusLogin = false
     },
-    Register({ commit, dispatch }, payload){
+    Register({ commit, dispatch }, payload ){
       axios.post('http://localhost:3000/register',{
         name: this.state.name,
         email: this.state.email,
@@ -88,6 +105,54 @@ export default new Vuex.Store({
         this.state.email = ''
         this.state.password = ''
         this.state.statusLogin = false
+      })
+    },
+    CreateQuestion({ commit, dispatch }, payload ){
+      var token = localStorage.getItem('token')
+      axios.post('http://localhost:3000/questions/add',{
+        title: this.state.title,
+        question: this.state.question
+      },{
+        headers: { token: token }
+      })
+      .then( quest =>{
+        swal('','success create new question!','success')
+        this.state.title = ''
+        this.state.question = ''
+        dispatch('GetAll')
+        // console.log(quest.data);
+        
+      })
+      .catch( err =>{
+        if(err.response.data.msg==="failed authentication"){
+          swal('',"Your question couldn't be submitted. Please login before!","warning")
+        }else{
+          swal('',"Your question couldn't be submitted. Title and Question is required!","warning")
+        }
+        this.state.title = ''
+        this.state.question = ''
+        console.log(err.response.data);
+      })
+    },
+    GetAll({ commit, dispatch }, payload ){
+      axios.get('http://localhost:3000/questions')
+      .then( quest =>{
+        commit('allQuestion',quest.data)
+        
+      })
+      .catch( err =>{
+        console.log(err.response);
+      })
+    },
+    Detail({ commit, dispatch }, payload ){
+      this.state.statusDetail = true
+      axios.get(`http://localhost:3000/questions/detail/${payload}`)
+      .then( quest =>{
+        commit('detailQuestion',quest.data)
+      })
+      .catch( err =>{
+        console.log(err.response);
+        
       })
     }
   }

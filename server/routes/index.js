@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.post('/register', Register)
+router.post('/register', Register) //done
 router.post('/login', Login) // done
 router.get('/verify', Verify) // done
 

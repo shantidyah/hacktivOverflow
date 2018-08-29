@@ -118,11 +118,12 @@ export default {
 			'Register'
 		]),
 		register(){
+			
+			this.Register()
 			this.statusName = true
-			this.statusErr = ''
 			this.statusEmail = true
 			this.statusPasword = true
-			this.Register()
+			this.statusErr = ''
 		}
 	}
 
